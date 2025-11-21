@@ -191,7 +191,7 @@ public class UnoModel {
 
 
     public void skipAll() {
-
+        notifyViews();
     }
 
     //------------------------------------------//

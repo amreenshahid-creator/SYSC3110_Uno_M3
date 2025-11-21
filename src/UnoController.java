@@ -180,6 +180,15 @@ public class UnoController implements ActionListener {
                     view.updateStatusMessage("Draw five played and " + nextPlayer + " picks up 5 cards and skips their turn.");
                 }
 
+                else if(cardPicked.getValueDark().equals(UnoModel.ValuesDark.SKIP_ALL)) {
+                    model.skipAll();
+                    view.updateHandPanel(model, this);
+                    frame.disableCards();
+                    isAdvanced = true;
+                    view.updateStatusMessage("Everyone's turn is skipped, " + model.getCurrPlayer().getName() + " plays again." );
+
+                }
+
                 // Regular card played
                 else {
                     view.updateHandPanel(model, this);
