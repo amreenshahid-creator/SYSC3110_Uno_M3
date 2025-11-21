@@ -178,7 +178,15 @@ public class UnoModel {
     }
 
     public void drawFive() {
+        int nextPlayerIndex = (currPlayerIndex + 1) % players.size();
+        Player nextPlayer = players.get(nextPlayerIndex);
 
+        for(int i = 0; i < 5; i++) {
+            nextPlayer.addCard(getRandomCard());
+        }
+
+        notifyViews();
+        skip();
     }
 
 

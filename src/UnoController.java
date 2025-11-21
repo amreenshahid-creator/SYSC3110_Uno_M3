@@ -112,7 +112,7 @@ public class UnoController implements ActionListener {
                 model.playCard(cardPicked);                 // Apply card to discard pile
                 model.setTopCard(cardPicked);               // Update the top card
 
-                if(cardPicked.getValue().equals(UnoModel.Values.DRAW_ONE)){
+                if(model.getSide() == UnoModel.Side.LIGHT && cardPicked.getValue().equals(UnoModel.Values.DRAW_ONE)){
                     model.drawOne();                         // Next player draws one
                     view.updateHandPanel(model, this);
                     frame.disableCards();
@@ -120,7 +120,7 @@ public class UnoController implements ActionListener {
                     view.updateStatusMessage(model.getNextPlayer().getName() + " draws a card");
                 }
 
-                else if(cardPicked.getValue().equals(UnoModel.Values.REVERSE)) {
+                else if(model.getSide() == UnoModel.Side.LIGHT && cardPicked.getValue().equals(UnoModel.Values.REVERSE)) {
                     model.reverse();                           // Reverse turn order
                     view.updateHandPanel(model, this);
                     frame.disableCards();
@@ -128,7 +128,7 @@ public class UnoController implements ActionListener {
                     view.updateStatusMessage(model.getCurrPlayer().getName() + " has reversed the order");
                 }
 
-                else if(cardPicked.getValue().equals(UnoModel.Values.SKIP)) {
+                else if(model.getSide() == UnoModel.Side.LIGHT && cardPicked.getValue().equals(UnoModel.Values.SKIP)) {
                     String nextPlayer = model.getNextPlayer().getName();
                     model.skip();                               // Skip next player's turn
                     view.updateHandPanel(model, this);
@@ -169,6 +169,15 @@ public class UnoController implements ActionListener {
                     frame.disableCards();
                     isAdvanced = false;
                     view.updateStatusMessage("deck has been flipped");
+                }
+
+                else if(cardPicked.getValueDark().equals(UnoModel.ValuesDark.DRAW_FIVE)) {
+                    model.drawFive();
+                    view.updateHandPanel(model, this);
+                    frame.disableCards();
+                    isAdvanced = true;
+                    String nextPlayer = model.getNextPlayer().getName();
+                    view.updateStatusMessage("Draw five played and " + nextPlayer + " picks up 5 cards and skips their turn.");
                 }
 
                 // Regular card played
