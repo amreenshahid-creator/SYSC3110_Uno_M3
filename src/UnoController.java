@@ -1,5 +1,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
+
 
 /**
  * The UnoController connects the UnoModel, UnoView, and UnoFrame.
@@ -16,6 +18,12 @@ public class UnoController implements ActionListener {
 
     /** The main game window containing UI components. */
     private final UnoFrame frame;
+
+    /** Flags indicating which players are AI-controlled. Indexed by player order. */
+    private boolean[] aiPlayers;
+
+    /** True while the controller is performing AI turns (prevents recursion). */
+    private boolean aiTurnInProgress;
 
     /**
      * Tracks whether the "Next Player" advance action has already been applied
@@ -37,6 +45,8 @@ public class UnoController implements ActionListener {
         this.frame = frame;
 
         isAdvanced = false;
+        aiPlayers = null;
+        aiTurnInProgress = false;
     }
 
     /**
@@ -47,13 +57,26 @@ public class UnoController implements ActionListener {
      * - Enabling card interaction
      */
     public void play() {
-        for(String player: frame.getPlayerName()) {
-            model.addPlayer(player);
+        java.util.List<String> names = frame.getPlayerName();
+        aiPlayers = new boolean[names.size()];
+
+        for (int i = 0; i < names.size(); i++) {
+            String playerName = names.get(i);
+            int choice = JOptionPane.showConfirmDialog(
+                    null,
+                    "Should " + playerName + " be controlled by the computer (AI)?",
+                    "Player Type",
+                    JOptionPane.YES_NO_OPTION
+            );
+            aiPlayers[i] = (choice == JOptionPane.YES_OPTION);
+            model.addPlayer(playerName);
         }
+
         model.newRound();
         //view.update(model);
         view.updateHandPanel(model, this);
         frame.enableCards();
+        triggerAITurnIfNeeded();
     }
 
 
@@ -80,7 +103,9 @@ public class UnoController implements ActionListener {
                 frame.disableCardButtons();
             }
 
-
+            if (!aiTurnInProgress) {
+                triggerAITurnIfNeeded();
+            }
 
         }
 
@@ -102,7 +127,7 @@ public class UnoController implements ActionListener {
 
             else {
                 frame.getNextButton().setEnabled(true);
-                model.drawCard();                              // Draw card into player's hand
+                model.drawCard();                          // Draw card into player's hand
                 isAdvanced = false;
                 view.updateHandPanel(model, this);
                 frame.disableCards();                          // Disable cards until next turn
@@ -271,4 +296,69 @@ public class UnoController implements ActionListener {
             }
         }
     }
+
+    private boolean isCurrentPlayerAI() {
+        if (aiPlayers == null) {
+            return false;
+        }
+        String currentName = model.getCurrPlayer().getName();
+        java.util.List<String> names = frame.getPlayerName();
+        for (int i = 0; i < names.size(); i++) {
+            if (names.get(i).equals(currentName)) {
+                return aiPlayers[i];
+            }
+        }
+        return false;
+    }
+
+    private void triggerAITurnIfNeeded() {
+        if (aiPlayers == null) {
+            return;
+        }
+        if (!isCurrentPlayerAI()) {
+            return;
+        }
+
+        aiTurnInProgress = true;
+        try {
+            performAITurns();
+        } finally {
+            aiTurnInProgress = false;
+        }
+    }
+
+    private void performAITurns() {
+        while (isCurrentPlayerAI() && !model.isDeckEmpty()) {
+            Card chosen = null;
+            for (Card c : model.getCurrPlayer().getPersonalDeck()) {
+                if (model.isPlayable(c)) {
+                    chosen = c;
+                    break;
+                }
+            }
+
+            if (chosen != null) {
+                String cmd;
+                if (chosen.getValue().equals(UnoModel.Values.WILD) ||
+                        chosen.getValue().equals(UnoModel.Values.WILD_DRAW_TWO)) {
+                    cmd = chosen.getValue() + "_" + System.identityHashCode(chosen);
+                } else {
+                    cmd = chosen.getColour() + "_" + chosen.getValue();
+                }
+                ActionEvent cardEvent = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, cmd);
+                actionPerformed(cardEvent);
+            } else {
+                ActionEvent drawEvent = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Draw Card");
+                actionPerformed(drawEvent);
+            }
+
+            if (model.isDeckEmpty()) {
+                break;
+            }
+
+            ActionEvent nextEvent = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Next Player");
+            actionPerformed(nextEvent);
+        }
+    }
+
 }
