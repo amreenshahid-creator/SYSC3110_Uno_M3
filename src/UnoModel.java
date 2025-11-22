@@ -431,4 +431,69 @@ public class UnoModel {
             v.update(event);
         }
     }
+
+    // ---------- AI helpers ----------
+    public List<Card> getPlayableCards(Player player) {
+        List<Card> playable = new ArrayList<>();
+        for(Card card : player.getPersonalDeck()) {
+            if(isPlayable(card)) {
+                playable.add(card);
+            }
+        }
+        return playable;
+    }
+
+    public List<Card> getPlayableCardsForCurrPlayer() {
+        return getPlayableCards(getCurrPlayer());
+    }
+
+    public boolean hasPlayableCard(Player player) {
+        return !getPlayableCards(player).isEmpty();
+    }
+
+    public boolean currPlayerHasPlayableCard() {
+        return hasPlayableCard(getCurrPlayer());
+    }
+
+    public Card chooseAICard(Player player) {
+        List<Card> playable = getPlayableCards(player);
+        if(playable.isEmpty()) {
+            return null;
+        }
+
+        Card best = null;
+        for(Card card : playable) {
+            if(best == null) {
+                best = card;
+                continue;
+            }
+
+            boolean bestIsNumber = isNumberCard(best);
+            boolean cardIsNumber = isNumberCard(card);
+
+            if(bestIsNumber && !cardIsNumber) {
+                best = card;
+            }
+        }
+
+        return best;
+    }
+
+    public Card chooseAICardForCurrPlayer() {
+        return chooseAICard(getCurrPlayer());
+    }
+
+    private boolean isNumberCard(Card card) {
+        if(side == Side.LIGHT) {
+            Values v = card.getValue();
+            return v == Values.ONE || v == Values.TWO || v == Values.THREE || v == Values.FOUR
+                    || v == Values.FIVE || v == Values.SIX || v == Values.SEVEN
+                    || v == Values.EIGHT || v == Values.NINE;
+        } else {
+            ValuesDark v = card.getValueDark();
+            return v == ValuesDark.ONE || v == ValuesDark.TWO || v == ValuesDark.THREE || v == ValuesDark.FOUR
+                    || v == ValuesDark.FIVE || v == ValuesDark.SIX || v == ValuesDark.SEVEN
+                    || v == ValuesDark.EIGHT || v == ValuesDark.NINE;
+        }
+    }
 }
