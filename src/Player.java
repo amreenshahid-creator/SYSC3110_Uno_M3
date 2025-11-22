@@ -1,65 +1,66 @@
+// Player.java
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Player entity. Holds a name, type (human or AI) and the player's hand.
+ * Player entity: holds a name, an AI flag, and the personal hand.
  */
 public class Player {
 
-    public enum Type {
-        HUMAN,
-        AI
-    }
-
+    /** The cards currently in this player's hand. */
     private final List<Card> personalDeck = new ArrayList<>();
+
+    /** Display name of the player (for UI / scoreboard). */
     private final String name;
-    private final Type type;
 
-    /** Creates a human player with the given display name. */
+    /** True if this player is controlled by the computer (AI). */
+    private final boolean ai;
+
+    /**
+     * Creates a human-controlled player with the given display name.
+     */
     public Player(String name) {
-        this(name, Type.HUMAN);
+        this(name, false);
     }
 
-    /** Creates a player with an explicit type. */
-    public Player(String name, Type type) {
+    /**
+     * Creates a player with the given display name and control type.
+     *
+     * @param name display name
+     * @param isAI true if this player is controlled by the AI, false for a human
+     */
+    public Player(String name, boolean isAI) {
         this.name = name;
-        this.type = type;
+        this.ai = isAI;
     }
 
-    /** Live list of cards held by this player. */
+    /**
+     * @return live list of cards held by the player.
+     */
     public List<Card> getPersonalDeck() {
         return personalDeck;
     }
 
-    /** Adds a single card to the player's hand. */
+    /**
+     * Adds a single card to the player's hand.
+     */
     public void addCard(Card c) {
         if (c != null) {
             personalDeck.add(c);
         }
     }
 
-    /** Removes a card from the player's hand. */
-    public void removeCard(Card c) {
-        personalDeck.remove(c);
-    }
-
-    /** Returns true if this player has no cards left. */
-    public boolean hasNoCards() {
-        return personalDeck.isEmpty();
-    }
-
-    /** Player display name. */
+    /**
+     * @return player display name.
+     */
     public String getName() {
         return name;
     }
 
-    /** Player type (HUMAN or AI). */
-    public Type getType() {
-        return type;
-    }
-
-    /** Convenience: is this player controlled by the AI. */
+    /**
+     * @return true if this player is controlled by the AI.
+     */
     public boolean isAI() {
-        return type == Type.AI;
+        return ai;
     }
 }
