@@ -131,7 +131,6 @@ public class UnoFrame implements UnoView {
 
         frame.add(controlPanel, BorderLayout.EAST);
 
-        frame.setVisible (false);
 
         // ----- Prompt Player Count -----
         String[] playerOptions = {"2", "3", "4"};
