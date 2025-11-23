@@ -226,7 +226,7 @@ public class UnoModel {
             isWildStackCard = false;
             newColour = null;
             nextPlayer = null;
-            advance();
+            //advance();
             notifyViews();
             return true;
         }

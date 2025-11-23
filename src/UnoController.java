@@ -73,7 +73,6 @@ public class UnoController implements ActionListener {
         }
 
         model.newRound();
-        //view.update(model);
         view.updateHandPanel(model, this);
         frame.enableCards();
         triggerAITurnIfNeeded();
@@ -112,15 +111,20 @@ public class UnoController implements ActionListener {
         // Handle Draw Card button
         if(e.getActionCommand().equals("Draw Card")) {
             if(model.isWildStackCard()) {
+                String drawPlayer = model.getCurrPlayer().getName();
+                boolean chosen = model.wildStack();
+
+                view.updateHandPanel(model, this);
                 frame.disableCardButtons();
 
-                boolean chosen = model.wildStack();
-                view.updateHandPanel(model, this);
-
                 if(chosen) {
-                    view.updateStatusMessage(model.getCurrPlayer().getName() + " drew the colour");
+                    view.updateHandPanel(model, this);
+                    frame.disableCards();
+                    view.updateStatusMessage(drawPlayer + " drew the colour");
                     isAdvanced = false;
+
                 } else {
+                    view.updateHandPanel(model, this);
                     view.updateStatusMessage("Keep drawing");
                 }
             }
@@ -135,7 +139,7 @@ public class UnoController implements ActionListener {
             }
         }
 
-        // Handle card selections
+        // Handle card buttons
         else {
             Card cardPicked = null;
             String cmd;
@@ -156,7 +160,6 @@ public class UnoController implements ActionListener {
             if (cardPicked != null && model.isPlayable(cardPicked)) {
 
                 model.playCard(cardPicked);                 // Apply card to discard pile
-                model.setTopCard(cardPicked);               // Update the top card
 
                 if(model.getSide() == UnoModel.Side.LIGHT && cardPicked.getValue().equals(UnoModel.Values.DRAW_ONE)){
                     model.drawOne();                         // Next player draws one

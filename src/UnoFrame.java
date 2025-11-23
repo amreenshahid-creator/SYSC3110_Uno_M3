@@ -50,6 +50,8 @@ public class UnoFrame implements UnoView {
     /** List of player names obtained during game setup. */
     private java.util.List<String> playerName;
 
+    private boolean isEnabled = true;
+
     /**
      * Constructs the game window and initializes all graphical components.
      */
@@ -253,9 +255,16 @@ public class UnoFrame implements UnoView {
      */
     public void handPanelButtons(List<Card> cards, UnoController controller, UnoModel model) {
         handPanel.removeAll();
+
+
+        boolean enableCards = isEnabled();
+
         for(Card c: cards) {
             JButton cardButton = cardButtons(c,model);
             cardButton.addActionListener(controller);
+
+            cardButton.setEnabled(enableCards);
+
             handPanel.add(cardButton);
             handPanel.add(Box.createRigidArea(new Dimension(10, 0)));
         }
@@ -298,6 +307,7 @@ public class UnoFrame implements UnoView {
         for(Component comp: handPanel.getComponents()) { //goes through all the buttons in hand panel
             if(comp instanceof JButton) {
                 comp.setEnabled(true);
+                isEnabled = true;
             }
         }
     }
@@ -323,6 +333,7 @@ public class UnoFrame implements UnoView {
         for(Component comp: handPanel.getComponents()) {
             if(comp instanceof JButton) {
                 comp.setEnabled(false);
+                isEnabled = false;
             }
         }
     }
@@ -337,8 +348,13 @@ public class UnoFrame implements UnoView {
         for(Component comp: handPanel.getComponents()) {
             if(comp instanceof JButton) {
                 comp.setEnabled(false);
+                isEnabled = false;
             }
         }
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
     }
 
     // ---------------- Interface Methods ----------------
