@@ -285,21 +285,41 @@ public class UnoModel {
                 continue;
             }
             List<Card> deck = player.getPersonalDeck();
-            for (Card card : deck) {
-                switch (card.getValue()) {
-                    case ONE -> score += 1;
-                    case TWO -> score += 2;
-                    case THREE -> score += 3;
-                    case FOUR -> score += 4;
-                    case FIVE -> score += 5;
-                    case SIX -> score += 6;
-                    case SEVEN -> score += 7;
-                    case EIGHT -> score += 8;
-                    case NINE -> score += 9;
-                    case DRAW_ONE -> score += 10;
-                    case SKIP, REVERSE -> score += 20;
-                    case WILD_DRAW_TWO -> score += 25;
-                    case WILD -> score += 50;
+            if(side == Side.LIGHT) {
+                for (Card card : deck) {
+                    switch (card.getValue()) {
+                        case ONE -> score += 1;
+                        case TWO -> score += 2;
+                        case THREE -> score += 3;
+                        case FOUR -> score += 4;
+                        case FIVE -> score += 5;
+                        case SIX -> score += 6;
+                        case SEVEN -> score += 7;
+                        case EIGHT -> score += 8;
+                        case NINE -> score += 9;
+                        case DRAW_ONE -> score += 10;
+                        case SKIP, REVERSE -> score += 20;
+                        case WILD -> score += 40;
+                        case WILD_DRAW_TWO -> score += 50;
+
+                    }
+                }
+            } else {
+                for (Card card : deck) {
+                    switch (card.getValueDark()) {
+                        case ONE -> score += 1;
+                        case TWO -> score += 2;
+                        case THREE -> score += 3;
+                        case FOUR -> score += 4;
+                        case FIVE -> score += 5;
+                        case SIX -> score += 6;
+                        case SEVEN -> score += 7;
+                        case EIGHT -> score += 8;
+                        case NINE -> score += 9;
+                        case DRAW_FIVE, FLIP -> score += 20;
+                        case SKIP_ALL -> score += 30;
+                        case WILD_STACK -> score += 60;
+                    }
                 }
             }
         }
