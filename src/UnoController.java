@@ -220,7 +220,7 @@ public class UnoController implements ActionListener {
                     view.updateStatusMessage("deck has been flipped");
                 }
 
-                else if(cardPicked.getValueDark().equals(UnoModel.ValuesDark.DRAW_FIVE)) {
+                else if(model.getSide() == UnoModel.Side.DARK && cardPicked.getValueDark().equals(UnoModel.ValuesDark.DRAW_FIVE)) {
                     model.drawFive();
                     view.updateHandPanel(model, this);
                     frame.disableCards();
@@ -229,7 +229,7 @@ public class UnoController implements ActionListener {
                     view.updateStatusMessage("Draw five played and " + nextPlayer + " picks up 5 cards and skips their turn.");
                 }
 
-                else if(cardPicked.getValueDark().equals(UnoModel.ValuesDark.SKIP_ALL)) {
+                else if(model.getSide() == UnoModel.Side.DARK && cardPicked.getValueDark().equals(UnoModel.ValuesDark.SKIP_ALL)) {
                     model.skipAll();
                     view.updateHandPanel(model, this);
                     frame.disableCards();
@@ -238,7 +238,7 @@ public class UnoController implements ActionListener {
 
                 }
 
-                else if(cardPicked.getValueDark().equals(UnoModel.ValuesDark.WILD_STACK)) {
+                else if(model.getSide() == UnoModel.Side.DARK && cardPicked.getValueDark().equals(UnoModel.ValuesDark.WILD_STACK)) {
                     String colour = frame.colourSelectionDialogDark(); // Choose new colour
                     if(colour != null) {
                         model.setInitWildStack(UnoModel.ColoursDark.valueOf(colour));

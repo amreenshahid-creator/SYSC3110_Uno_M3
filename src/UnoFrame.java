@@ -427,7 +427,6 @@ public class UnoFrame implements UnoView {
     }
 
 
-
     /**
      * Main method to launch the standalone UNO game window.
      */
