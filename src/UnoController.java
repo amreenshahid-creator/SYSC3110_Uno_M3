@@ -212,7 +212,8 @@ public class UnoController implements ActionListener {
                     return;
                 }
 
-                else if(cardPicked.getValueDark().equals(UnoModel.ValuesDark.FLIP) || cardPicked.getValue().equals(UnoModel.Values.FLIP) ) {
+                else if((model.getSide() == UnoModel.Side.DARK && (cardPicked.getValueDark().equals(UnoModel.ValuesDark.FLIP))) ||
+                        (model.getSide() == UnoModel.Side.LIGHT && (cardPicked.getValue().equals(UnoModel.Values.FLIP)))) {
                     model.flip();
                     view.updateHandPanel(model, this);
                     frame.disableCards();
@@ -252,7 +253,14 @@ public class UnoController implements ActionListener {
                 }
 
                 // Regular card played
-                else {
+                else if (model.getSide() == UnoModel.Side.LIGHT){
+                    view.updateHandPanel(model, this);
+                    frame.disableCards();
+                    isAdvanced = false;
+                    view.updateStatusMessage(model.getCurrPlayer().getName() + " played a card");
+                }
+
+                else if(model.getSide() == UnoModel.Side.DARK) {
                     view.updateHandPanel(model, this);
                     frame.disableCards();
                     isAdvanced = false;

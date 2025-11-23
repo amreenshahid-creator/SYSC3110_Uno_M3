@@ -63,8 +63,6 @@ public class UnoModel {
 
 
 
-
-
     /**
      * Generates a random card. In this milestone, there is no physical deck;
      * draws are random and infinite.
@@ -106,7 +104,6 @@ public class UnoModel {
         notifyViews();
     }
 
-    //--------------- ACTION CARDS ----------------//
 
     /**
      * Current player draws one random card.
@@ -116,6 +113,9 @@ public class UnoModel {
         currPlayer.addCard(getRandomCard());
         notifyViews();
     }
+
+
+    //--------------- ACTION CARDS ----------------//
 
     /**
      * Makes the next player (relative to current direction) draw exactly one card.
@@ -182,8 +182,17 @@ public class UnoModel {
     public void flip() {
         if(side == Side.DARK) {
             side = Side.LIGHT;
+
+            while(topCard != null && (topCard.getValue()).equals(Values.WILD) ||(topCard.getValue()).equals(Values.WILD_DRAW_TWO) ) {
+                topCard = getRandomCard();
+            }
+
         } else {
             side = Side.DARK;
+
+            while(topCard != null && (topCard.getValueDark()).equals(ValuesDark.WILD_STACK)) {
+                topCard = getRandomCard();
+            }
         }
 
         notifyViews();
