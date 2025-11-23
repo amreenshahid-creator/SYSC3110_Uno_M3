@@ -50,7 +50,8 @@ public class UnoFrame implements UnoView {
     /** List of player names obtained during game setup. */
     private java.util.List<String> playerName;
 
-    private boolean isEnabled = true;
+    /** Parallel list indicating which players are AI (true = AI, false = human). */
+    private java.util.List<Boolean> aiPlayers;
 
     /**
      * Constructs the game window and initializes all graphical components.
@@ -131,6 +132,7 @@ public class UnoFrame implements UnoView {
 
         frame.add(controlPanel, BorderLayout.EAST);
 
+        frame.setVisible (true);
 
         // ----- Prompt Player Count -----
         String[] playerOptions = {"2", "3", "4"};
@@ -144,17 +146,24 @@ public class UnoFrame implements UnoView {
         // ----- Prompt Player Names -----
         int count = Integer.parseInt(playerCount);
         playerName = new ArrayList<>();
+        aiPlayers = new ArrayList<>();
         for (int i = 1; i <= count; i++){
             String name = JOptionPane.showInputDialog(frame, "Enter name for Player "+ i + ":", "Player Setup", JOptionPane.QUESTION_MESSAGE);
             if (name == null || name.trim().isEmpty()){
                 name = "Player" + i;
             }
             playerName.add(name);
+
+            int choice = JOptionPane.showConfirmDialog(
+                    frame,
+                    "Should " + name + " be an AI player?",
+                    "Player Type",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
+            );
+            boolean isAI = (choice == JOptionPane.YES_OPTION);
+            aiPlayers.add(isAI);
         }
-
-
-        frame.setVisible(true);
-
 
         // ----- Setup Scoreboard for Actual Player Count -----
         scoreBoardPanel.removeAll();
@@ -204,29 +213,13 @@ public class UnoFrame implements UnoView {
      */
     public String colourSelectionDialog() {
         String[] colours = {"RED", "YELLOW", "GREEN", "BLUE"};
-        String colourSelected = null;
-
-        while(colourSelected == null) {
-            colourSelected = (String) JOptionPane.showInputDialog(frame, "Choose new colour for Wild Card:", "Wild Card Colour", JOptionPane.PLAIN_MESSAGE, null, colours, colours[0]);
-
-            if(colourSelected == null) {
-                JOptionPane.showMessageDialog(frame, "You must select a colour to continue");
-            }
-        }
+        String colourSelected = (String) JOptionPane.showInputDialog(frame, "Choose new colour for Wild Card:", "Wild Card Colour", JOptionPane.PLAIN_MESSAGE, null, colours, colours[0]);
         return colourSelected;
     }
 
     public String colourSelectionDialogDark() {
         String[] colours = {"TEAL", "PURPLE", "PINK", "ORANGE"};
-        String colourSelected = null;
-
-        while(colourSelected == null) {
-            colourSelected = (String) JOptionPane.showInputDialog(frame, "Choose new colour for Wild Card:", "Wild Card Colour", JOptionPane.PLAIN_MESSAGE, null, colours, colours[0]);
-
-            if(colourSelected == null) {
-                JOptionPane.showMessageDialog(frame, "You must select a colour to continue");
-            }
-        }
+        String colourSelected = (String) JOptionPane.showInputDialog(frame, "Choose new colour for Wild Card:", "Wild Card Colour", JOptionPane.PLAIN_MESSAGE, null, colours, colours[0]);
         return colourSelected;
     }
 
@@ -244,6 +237,11 @@ public class UnoFrame implements UnoView {
     /** @return list of player names entered during setup. */
     public List<String> getPlayerName() {
         return playerName;
+    }
+
+    /** @return parallel list of which players are AI. */
+    public List<Boolean> getAIPlayers() {
+        return aiPlayers;
     }
 
     /**
@@ -274,16 +272,9 @@ public class UnoFrame implements UnoView {
      */
     public void handPanelButtons(List<Card> cards, UnoController controller, UnoModel model) {
         handPanel.removeAll();
-
-
-        boolean enableCards = isEnabled();
-
         for(Card c: cards) {
             JButton cardButton = cardButtons(c,model);
             cardButton.addActionListener(controller);
-
-            cardButton.setEnabled(enableCards);
-
             handPanel.add(cardButton);
             handPanel.add(Box.createRigidArea(new Dimension(10, 0)));
         }
@@ -326,7 +317,6 @@ public class UnoFrame implements UnoView {
         for(Component comp: handPanel.getComponents()) { //goes through all the buttons in hand panel
             if(comp instanceof JButton) {
                 comp.setEnabled(true);
-                isEnabled = true;
             }
         }
     }
@@ -352,7 +342,6 @@ public class UnoFrame implements UnoView {
         for(Component comp: handPanel.getComponents()) {
             if(comp instanceof JButton) {
                 comp.setEnabled(false);
-                isEnabled = false;
             }
         }
     }
@@ -367,13 +356,8 @@ public class UnoFrame implements UnoView {
         for(Component comp: handPanel.getComponents()) {
             if(comp instanceof JButton) {
                 comp.setEnabled(false);
-                isEnabled = false;
             }
         }
-    }
-
-    public boolean isEnabled() {
-        return isEnabled;
     }
 
     // ---------------- Interface Methods ----------------
@@ -444,6 +428,7 @@ public class UnoFrame implements UnoView {
             }
         }
     }
+
 
 
     /**
