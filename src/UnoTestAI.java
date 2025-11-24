@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestAI {
+public class UnoTestAI {
     @Test
     void testAIFlag() {
         Player human = new Player("Alice", false);
