@@ -3,7 +3,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestAI {
-
     @Test
     void testAIFlag() {
         Player human = new Player("Alice", false);
@@ -12,7 +11,6 @@ public class TestAI {
         assertTrue(ai.isAI());
         assertEquals("Bot", ai.getName());
     }
-
     @Test
     void testChoosesPlayableCard() {
         UnoModel model = new UnoModel();
@@ -20,7 +18,6 @@ public class TestAI {
         model.addPlayer("Human", false);
         Player aiPlayer = model.getCurrPlayer();
         aiPlayer.getPersonalDeck().clear();
-
         Card top = new Card(
                 UnoModel.Colours.RED,
                 UnoModel.Values.THREE,
@@ -28,14 +25,12 @@ public class TestAI {
                 UnoModel.ValuesDark.ONE
         );
         model.setTopCard(top);
-
         Card redFive = new Card(
                 UnoModel.Colours.RED,
                 UnoModel.Values.FIVE,
                 UnoModel.ColoursDark.PINK,
                 UnoModel.ValuesDark.FIVE
         );
-
         Card yellowThree = new Card(
                 UnoModel.Colours.YELLOW,
                 UnoModel.Values.THREE,
@@ -49,7 +44,6 @@ public class TestAI {
                 UnoModel.ColoursDark.TEAL,
                 UnoModel.ValuesDark.TWO
         );
-
         aiPlayer.addCard(redFive);
         aiPlayer.addCard(yellowThree);
         aiPlayer.addCard(greenTwo);
@@ -100,7 +94,6 @@ public class TestAI {
         model.addPlayer("Human", false);
         Player ai = model.getCurrPlayer();
         ai.getPersonalDeck().clear();
-
         Card top = new Card(
                 UnoModel.Colours.RED,
                 UnoModel.Values.THREE,
@@ -108,14 +101,12 @@ public class TestAI {
                 UnoModel.ValuesDark.ONE
         );
         model.setTopCard(top);
-
         Card greenOne = new Card(
                 UnoModel.Colours.GREEN,
                 UnoModel.Values.ONE,
                 UnoModel.ColoursDark.TEAL,
                 UnoModel.ValuesDark.ONE
         );
-
         Card blueTwo = new Card(
                 UnoModel.Colours.BLUE,
                 UnoModel.Values.TWO,
