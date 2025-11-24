@@ -178,6 +178,7 @@ public class UnoController implements ActionListener {
         // Handle "Draw Card" button presses
         else if (e.getActionCommand().equals("Draw Card")) {
             boolean canDraw = false;
+
             for (Card card : model.getCurrPlayer().getPersonalDeck()) {
                 if (model.isPlayable(card)) {
                     canDraw = true;
@@ -185,10 +186,27 @@ public class UnoController implements ActionListener {
                 }
             }
 
-            if (!canDraw) {
-                model.drawCard();
+            if(model.isWildStackCard()) {
+                boolean chosen = model.wildStack();
                 view.updateHandPanel(model, this);
                 frame.disableCardButtons();
+
+                if(chosen) {
+                    view.updateHandPanel(model, this);
+                    frame.disableCards();
+                    view.updateStatusMessage(model.getCurrPlayer() + "drew the colour");
+
+                } else {
+                    view.updateHandPanel(model, this);
+                    view.updateStatusMessage("Keep drawing");
+
+                }
+            }
+
+            else if(!canDraw) {
+                model.drawCard();
+                view.updateHandPanel(model, this);
+                frame.disableCards();
                 view.updateStatusMessage(model.getCurrPlayer().getName() + " draws one card.");
                 isAdvanced = false;
             } else {
@@ -332,8 +350,15 @@ public class UnoController implements ActionListener {
                         }
                     }
                     view.updateHandPanel(model, this);
-                    frame.disableCards();
-                    isAdvanced = false;
+                    //frame.disableCards();
+                    //isAdvanced = false;
+
+                    if(!model.getCurrPlayer().isAI()) {
+                        frame.enableCards();
+                    } else {
+                        frame.disableCardButtons();
+                    }
+
                     String nextPlayer = model.getNextPlayer().getName();
                     if (colour != null) {
                         view.updateStatusMessage("New colour chosen, " + colour + ", " + nextPlayer +
@@ -418,11 +443,25 @@ public class UnoController implements ActionListener {
 
                 if (aiChoice != null) {
                     actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, buildActionCommand(aiChoice)));
+
+                    //When AI plays a Wild Stack
+                    if(model.isWildStackCard()) {
+                        view.updateStatusMessage("Wild stack card played. Chosen colour " + model.getTopCard().getColourDark() +
+                        "and " + model.getNextPlayer().getName() + "draws until " + model.getTopCard().getColourDark() + " is chosen.");
+                        break;
+                    }
+
                 } else {
                     actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Draw Card"));
                 }
 
-                actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Next Player"));
+                //Only go to next player if wild stack card isn't played
+                if(!model.isWildStackCard()) {
+                    actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Next Player"));
+                } else {
+                    break;
+                }
+
             }
         } finally {
             handlingAITurn = false;
