@@ -218,8 +218,9 @@ public class UnoModel {
     public void setInitWildStack(ColoursDark newColour) {
         topCard.setColourDark(newColour);
         isWildStackCard = true;
-        nextPlayer = getNextPlayer();
         this.newColour = newColour;
+        currPlayerIndex = (currPlayerIndex + direction + players.size()) % players.size();
+        notifyViews();
     }
 
     public boolean wildStack() {
@@ -228,14 +229,13 @@ public class UnoModel {
         }
 
         Card drawnCard = getRandomCard();
-        nextPlayer.addCard(drawnCard);
+        getCurrPlayer().addCard(drawnCard);
         notifyViews();
 
-        if(drawnCard.getColourDark().equals(newColour)) {
+        if(drawnCard.getColourDark() != null && drawnCard.getColourDark().equals(newColour)) {
             isWildStackCard = false;
             newColour = null;
-            nextPlayer = null;
-            //advance();
+            //currPlayerIndex = (currPlayerIndex + direction + players.size()) % players.size();
             notifyViews();
             return true;
         }
