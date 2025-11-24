@@ -13,3 +13,10 @@ for the previews milestone, Marc prepared the README, added JavaDocs, comments a
 Iman Elabd 
 
 for the previews milestone, Iman was responsibe for testings cross classes and methods, ensuring the game ran smoothly. general code quality by improving synchronization between components, refining error handling, and expanding JUnit test coverage for model behavior and game logic. for current milestone, Iman continued doing JUnit testing for this milestone, she added JUnit tests for Uno Flip cards and tested the AI player actions. Ensured everything running smoothly. Iman prepared the README for this milestone, added JavaDocs, comments. 
+
+
+Breakdown of other deliverables: Our project is split into four milestones. Milestone 1 was the text-based game of Uno. Milestone 2 added the full GUI and model testing. Milestone 3 focused on Uno Flip and the AI players. Milestone 4 includes the undo/redo feature and saving and loading the game
+
+for every milestone, we update the code, add new tests, fix the UML diagrams, update our documentation, and write a README that explains what changed and who worked on what. Each milestone is submitted as one zip file with everything included.
+
+Known issues: All features work as expected, and we did not encounter any known issues for this milestone.
