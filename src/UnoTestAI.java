@@ -1,7 +1,17 @@
+ /**
+ * JUnit Tests for AI Behaviour (Milestone 3)
+ * 
+ * This test suite verifies:
+ *  - AI flag detection
+ *  - AI selection of AI legal playable cards 
+ *  - AI perfernce in action cards 
+ *  - AI returning null when no moves exist
+ */
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
+/** Ensures the AI flag identifies AI players. */
 public class UnoTestAI {
     @Test
     void testAIFlag() {
@@ -11,6 +21,7 @@ public class UnoTestAI {
         assertTrue(ai.isAI());
         assertEquals("Bot", ai.getName());
     }
+    /** AI selects only valid playable cards. */
     @Test
     void testChoosesPlayableCard() {
         UnoModel model = new UnoModel();
@@ -53,7 +64,7 @@ public class UnoTestAI {
         assertTrue(playable.contains(chosen));
         assertNotEquals(greenTwo, chosen);
     }
-
+    /** Ensures the AI prefers for action cards over number cards. */
     @Test
     void testPrefersActionCard() {
         UnoModel model = new UnoModel();
@@ -86,7 +97,7 @@ public class UnoTestAI {
         assertNotNull(chosen);
         assertEquals(UnoModel.Values.DRAW_ONE, chosen.getValue());
     }
-
+    /**  Checks and assures AI returns null when no playable moves exist. */
     @Test
     void testNoPlayableCard() {
         UnoModel model = new UnoModel();
