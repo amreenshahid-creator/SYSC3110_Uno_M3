@@ -1,6 +1,7 @@
 Breakdown of Project Tasks and Responsibilities:
 
 
+
 Amreen Shahid
 
 for the previews milestone, Amreen handled the MVC part of the project. She used Java events and made sure the model, view, and controller were separated and worked smoothly together. For the current milestone, For the current milestone, Amreen worked on the Uno Flip features for this milestone. She added the Flip card, Draw Five, Skip Everyone, and Wild Draw Colour. She also updated the scoring so it follows the Uno Flip rules. All the changes needed for the Flip mechanics were done by her.
@@ -11,4 +12,4 @@ for the previews milestone, Marc prepared the README, added JavaDocs, comments a
 
 Iman Elabd 
 
-for the previews milestone, Iman was responsibe for testings cross classes and methods, ensuring the game ran smoothly. general code quality by improving synchronization between components, refining error handling, and expanding JUnit test coverage for model behavior and game logic. for current milestone, Iman continued 
+for the previews milestone, Iman was responsibe for testings cross classes and methods, ensuring the game ran smoothly. general code quality by improving synchronization between components, refining error handling, and expanding JUnit test coverage for model behavior and game logic. for current milestone, Iman continued doing JUnit testing for this milestone, she added JUnit tests for Uno Flip cards and tested the AI player actions. Ensured everything running smoothly. Iman prepared the README for this milestone, added JavaDocs, comments. 
