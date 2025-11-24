@@ -1,3 +1,13 @@
+/**
+ * JUnit Tests for Uno Flip Features (Milestone 3)
+ *
+ * This test suite verifies:
+ *  - Flipping between LIGHT and DARK sides
+ *  - Draw Five card behaviour
+ *  - Skip Everyone behaviour
+ *  - Wild Stack drawing logic
+ *  - Scoring on Light and Dark sides
+ */
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayDeque;
@@ -17,7 +27,7 @@ public class UnoModelFlipTest {
             return super.getRandomCard();
         }
     }
-
+    /** Ensures flip() switches the side between LIGHT and DARK sides. */
     @Test
     void testFlipSide() {
         UnoModel model = new UnoModel();
@@ -36,7 +46,7 @@ public class UnoModelFlipTest {
         model.flip();
         assertEquals(UnoModel.Side.LIGHT, model.getSide());
     }
-
+    /** Verify Draw Five adds Five cards to the next player and skips their turn. */
     @Test
     void testDrawFive() {
         UnoModel model = new UnoModel();
@@ -49,7 +59,7 @@ public class UnoModelFlipTest {
         assertEquals(before + 5, next.getPersonalDeck().size());
         assertSame(current, model.getCurrPlayer());
     }
-
+    /** Ensures Skip All does not change whose turn it is. */
     @Test
     void testSkipAll() {
         UnoModel model = new UnoModel();
@@ -61,7 +71,7 @@ public class UnoModelFlipTest {
         Player after = model.getCurrPlayer();
         assertSame(before, after);
     }
-
+    /** Ensures Wild Stack draws until a card of the chosen dark colour is drawn. */
     @Test
     void testWildStack() {
         TestUnoModel model = new TestUnoModel();
@@ -105,7 +115,7 @@ public class UnoModelFlipTest {
         assertEquals(before + 3, next.getPersonalDeck().size());
         assertFalse(model.isWildStackCard());
     }
-
+    /** verify scoring on the LIGHT side uses the correct values of points. */
     @Test
     void testLightScoring() {
         UnoModel model = new UnoModel();
@@ -124,7 +134,7 @@ public class UnoModelFlipTest {
         int score = model.getScore(winner);
         assertEquals(121, score);
     }
-
+    /** Verify scoring on the DARK side uses correct values of points. */
     @Test
     void testDarkScoring() {
         UnoModel model = new UnoModel();
