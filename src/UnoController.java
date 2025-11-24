@@ -300,7 +300,7 @@ public class UnoController implements ActionListener {
                     return;
                 }
 
-                else if (cardPicked.getValueDark().equals(UnoModel.ValuesDark.DRAW_FIVE)) {
+                else if (model.getSide() == UnoModel.Side.DARK && cardPicked.getValueDark().equals(UnoModel.ValuesDark.DRAW_FIVE)) {
                     model.drawFive();
                     view.updateHandPanel(model, this);
                     frame.disableCards();
@@ -311,7 +311,7 @@ public class UnoController implements ActionListener {
                     return;
                 }
 
-                else if (cardPicked.getValueDark().equals(UnoModel.ValuesDark.SKIP_ALL)) {
+                else if (model.getSide() == UnoModel.Side.DARK && cardPicked.getValueDark().equals(UnoModel.ValuesDark.SKIP_ALL)) {
                     model.skipAll();
                     view.updateHandPanel(model, this);
                     frame.disableCards();
@@ -319,7 +319,7 @@ public class UnoController implements ActionListener {
                     view.updateStatusMessage("All players skipped. Turn returns to " + model.getCurrPlayer().getName() + ".");
                 }
 
-                else if (cardPicked.getValueDark().equals(UnoModel.ValuesDark.WILD_STACK)) {
+                else if (model.getSide() == UnoModel.Side.DARK && cardPicked.getValueDark().equals(UnoModel.ValuesDark.WILD_STACK)) {
                     String colour;
                     if (model.getCurrPlayer().isAI()) {
                         UnoModel.ColoursDark chosen = chooseDarkColourForAI();
@@ -344,7 +344,8 @@ public class UnoController implements ActionListener {
                     }
                 }
 
-                else if (cardPicked.getValueDark().equals(UnoModel.ValuesDark.FLIP) || cardPicked.getValue().equals(UnoModel.Values.FLIP)) {
+                else if ((model.getSide() == UnoModel.Side.DARK &&(cardPicked.getValueDark().equals(UnoModel.ValuesDark.FLIP))) ||
+                        (model.getSide() == UnoModel.Side.LIGHT && (cardPicked.getValue().equals(UnoModel.Values.FLIP)))) {
                     model.flip();
                     view.updateHandPanel(model, this);
                     frame.disableCards();
@@ -352,7 +353,14 @@ public class UnoController implements ActionListener {
                     view.updateStatusMessage("Deck flipped to " + model.getSide() + " side.");
                 }
 
-                else {
+                else if(model.getSide() == UnoModel.Side.LIGHT){
+                    view.updateHandPanel(model, this);
+                    frame.disableCards();
+                    isAdvanced = false;
+                    view.updateStatusMessage(model.getCurrPlayer().getName() + " played a card.");
+                }
+
+                else if(model.getSide() == UnoModel.Side.DARK){
                     view.updateHandPanel(model, this);
                     frame.disableCards();
                     isAdvanced = false;
