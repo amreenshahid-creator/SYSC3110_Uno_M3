@@ -102,7 +102,6 @@ public class UnoModel {
         notifyViews();
     }
 
-
     /**
      * Current player draws one random card.
      */

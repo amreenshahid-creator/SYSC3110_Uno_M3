@@ -209,6 +209,12 @@ public class UnoFrame implements UnoView {
         return nextButton;
     }
 
+
+    /** @return the button used to draw a card. */
+    public JButton getDrawButton() {
+        return drawButton;
+    }
+
     /** @return the scoreboard panel. */
     public JPanel getScoreBoardPanel() {
         return scoreBoardPanel;
@@ -312,6 +318,12 @@ public class UnoFrame implements UnoView {
      */
     public void handPanelButtons(List<Card> cards, UnoController controller, UnoModel model) {
         handPanel.removeAll();
+
+        if (model.isWildStackCard()) {
+            disableCardButtons();
+        }else {
+            enableCards();
+        }
         for(Card c: cards) {
             JButton cardButton = cardButtons(c,model);
             cardButton.addActionListener(controller);
