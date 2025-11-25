@@ -20,35 +20,38 @@ public class Card {
         this.valueDark = valueDark;
     }
 
-    /** @return current colour; may be null for wilds until chosen */
+    /** @return current colour on the light side; may be null for wilds until chosen */
     public UnoModel.Colours getColour() {
         return colour;
     }
 
+    /** @return current colour on the dark side; may be null for wilds until chosen */
     public UnoModel.ColoursDark getColourDark() {
         return colourDark;
     }
 
-    /** @return value of the card (number/action/wild) */
+    /** @return value of the card on the light side (number/action/wild) */
     public UnoModel.Values getValue() {
         return value;
     }
 
+    /** @return value of the card on the dark side (number/action/wild) */
     public UnoModel.ValuesDark getValueDark() {
         return valueDark;
     }
 
-    /** Assigns a new colour (used when playing a wild). */
+    /** Assigns a new colour for the light side (used when playing a wild). */
     public void setColour(UnoModel.Colours colour) {
         this.colour = colour;
     }
 
+    /** Assigns a new colour for the dark side (used when playing a wild stack card). */
     public void setColourDark(UnoModel.ColoursDark colourDark) {
         this.colourDark = colourDark;
     }
 
     /**
-     * @return image file name for this card (assumes resources in /images).
+     * @return image file name for this card (assumes resources in /light_cards or /dark_cards depending on side).
      * Wilds do not include colour in the file name.
      */
     public String getFileName(UnoModel.Side side) {

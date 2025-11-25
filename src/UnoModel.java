@@ -1,14 +1,15 @@
 import java.util.*;
 
 /**
- * Core game model for a simplified UNO game (Milestone-ready).
+ * Core game model for a UNO Flip game (Milestone-ready).
  * <p>
  * Responsibilities:
  * - Holds game state (players, direction, current/next player).
  * - Manages deck-less random card generation for draws (stubbed RNG).
  * - Enforces legal-play checks (colour/value match; wilds always playable).
- * - Applies card effects (DRAW_ONE, REVERSE, SKIP, WILD, WILD_DRAW_TWO).
- * - Computes per-round score for the winner and tracks cumulative scores.
+ * - Applies card effects for the light side (FlIP, DRAW_ONE, REVERSE, SKIP, WILD, WILD_DRAW_TWO).
+ * - Applies card effects for the dark side (FLIP, DRAW_FIVE, SKIP_ALL, WILD_STACK).
+ * - Computes per-round score for the winner and tracks cumulative scores based on the current side of the deck.
  * - Notifies registered views (observer-style hooks via {@link #addView(UnoView)}).
  * <p>
  * Notes:
@@ -53,14 +54,11 @@ public class UnoModel {
     //Holds the current side
     private Side side = Side.LIGHT;
 
-    private boolean initWildStack;
-
+    //Indicates whether a Wild Stack card is currently in play
     private boolean isWildStackCard = false;
 
-    private Player nextPlayer;
-
+    //Holds the new chosen colour for the Wild Stack card
     private ColoursDark newColour;
-
 
 
     /**
