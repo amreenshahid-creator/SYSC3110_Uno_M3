@@ -27,6 +27,11 @@ public class UnoController implements ActionListener {
     /** Holds the last status message from an AI action so it can be shown alongside turn handoff text. */
     private String pendingAIStatusMessage;
 
+
+    /**
+     *
+     * @param status
+     */
     private void updateStatusWithPending(String status) {
         if (pendingAIStatusMessage != null && handlingAITurn) {
             status = pendingAIStatusMessage + " " + status;
@@ -51,6 +56,15 @@ public class UnoController implements ActionListener {
         pendingAIStatusMessage = null;
     }
 
+
+    /**
+     * Builds a unique action command string for the given card
+     * - Wild Cards: the command is a unique identifier to differentiate it from other wild cards in the deck
+     * - Others: command is based on the colour and value
+     *
+     * @param card the card to generate an action command
+     * @return a unique string representing the card
+     */
     private String buildActionCommand(Card card) {
         if (card.getValue().equals(UnoModel.Values.WILD) || card.getValue().equals(UnoModel.Values.WILD_DRAW_TWO)) {
             return card.getValue() + "_" + System.identityHashCode(card);
@@ -58,6 +72,13 @@ public class UnoController implements ActionListener {
         return card.getColour() + "_" + card.getValue();
     }
 
+
+    /**
+     * Chooses colour for the AI player when Wild Cards are being played
+     * - Picks colour based on the most common colour in the players deck
+     *
+     * @return the {@link UnoModel.Colours} with the highest count in the players deck
+     */
     private UnoModel.Colours chooseColourForAI() {
         Player player = model.getCurrPlayer();
         int[] counts = new int[UnoModel.Colours.values().length];
@@ -70,6 +91,12 @@ public class UnoController implements ActionListener {
         return UnoModel.Colours.values()[indexOfMax(counts)];
     }
 
+    /**
+     * Chooses colour for the AI player when Wild Stack card is being played
+     * - Picks colour based on the most common colour in the players deck
+     *
+     * @return the {@link UnoModel.ColoursDark} with the highest count in the players deck
+     */
     private UnoModel.ColoursDark chooseDarkColourForAI() {
         Player player = model.getCurrPlayer();
         int[] counts = new int[UnoModel.ColoursDark.values().length];
@@ -82,6 +109,12 @@ public class UnoController implements ActionListener {
         return UnoModel.ColoursDark.values()[indexOfMax(counts)];
     }
 
+    /**
+     * Returns the index of the maximum value in a list
+     *
+     * @param values list of integers
+     * @return index of the maximum value
+     */
     private int indexOfMax(int[] values) {
         int bestIndex = 0;
         for (int i = 1; i < values.length; i++) {
@@ -362,19 +395,6 @@ public class UnoController implements ActionListener {
                         view.updateStatusMessage("New colour chosen, " + colour + ", " + model.getNextPlayer().getName() +
                                 " keeps drawing cards until a " + colour + " card is chosen.");
                     }
-
-
-                    /*
-                    String nextPlayer = model.getNextPlayer().getName();
-                    if (colour != null) {
-                        view.updateStatusMessage("New colour chosen, " + colour + ", " + nextPlayer +
-                                " keeps drawing cards until a " + colour + " card is chosen.");
-                    } else {
-                        view.updateStatusMessage(nextPlayer +
-                                " keeps drawing cards until the chosen colour is drawn.");
-                    }
-
-                     */
                 }
 
                 else if ((model.getSide() == UnoModel.Side.DARK &&(cardPicked.getValueDark().equals(UnoModel.ValuesDark.FLIP))) ||
@@ -436,6 +456,11 @@ public class UnoController implements ActionListener {
         }
     }
 
+
+    /**
+     * Executes the turn for the AI player until a human player is active
+     * - Will stop if a wild stack card is being played to resolve in {@link #actionPerformed(ActionEvent)}
+     */
     private void maybeRunAITurn() {
         if (handlingAITurn) {
             return;
@@ -455,7 +480,7 @@ public class UnoController implements ActionListener {
                     //When AI plays a Wild Stack
                     if(model.isWildStackCard()) {
                         view.updateStatusMessage("Wild stack card played. Chosen colour " + model.getTopCard().getColourDark() +
-                        " and " + model.getCurrPlayer().getName() + " draws until " + model.getTopCard().getColourDark() + " is chosen.");
+                                " and " + model.getCurrPlayer().getName() + " draws until " + model.getTopCard().getColourDark() + " is chosen.");
                         break;
                     }
 
