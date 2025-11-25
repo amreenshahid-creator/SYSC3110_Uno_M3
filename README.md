@@ -19,4 +19,4 @@ Breakdown of other deliverables: Our project is split into four milestones. Mile
 
 for every milestone, we update the code, add new tests, fix the UML diagrams, update our documentation, and write a README that explains what changed and who worked on what. Each milestone is submitted as one zip file with everything included.
 
-Known issues: we did encountered an issue with AI wild stack card in  any known issues for this milestone.
+Known issues: we did encountered an issue with AI wild stack card, and a possible fix would be simplifying the Wild Stack logic so the AI can follow it correctly.
