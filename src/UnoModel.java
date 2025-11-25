@@ -472,6 +472,13 @@ public class UnoModel {
     }
 
     // ---------- AI helpers ----------
+
+    /**
+     * Returns a list of all cards in players hand that are playable.
+     *
+     * @param player the player whose hand is being checked
+     * @return list of playable cards, null if none are playable
+     */
     public List<Card> getPlayableCards(Player player) {
         List<Card> playable = new ArrayList<>();
         for(Card card : player.getPersonalDeck()) {
@@ -482,18 +489,35 @@ public class UnoModel {
         return playable;
     }
 
-    public List<Card> getPlayableCardsForCurrPlayer() {
-        return getPlayableCards(getCurrPlayer());
-    }
 
+    /**
+     * Checks if the player has playable cards in their deck
+     *
+     * @param player the player whose deck is being checked
+     * @return true if the player has playable cards, otherwise false
+     */
     public boolean hasPlayableCard(Player player) {
         return !getPlayableCards(player).isEmpty();
     }
 
+
+    /**
+     * Checks if the current player has any playable cards.
+     *
+     * @return true if the current player has playable cards, otherwise false
+     */
     public boolean currPlayerHasPlayableCard() {
         return hasPlayableCard(getCurrPlayer());
     }
 
+
+    /**
+     * Chooses a card from the AIs list of playable cards to play by
+     * playing non number cards if multiple playable cards exist.
+     *
+     * @param player the AI player whose deck will be checked to determine the best card to play
+     * @return the chosen card to play or null if player has no playable cards
+     */
     public Card chooseAICard(Player player) {
         List<Card> playable = getPlayableCards(player);
         if(playable.isEmpty()) {
@@ -518,10 +542,23 @@ public class UnoModel {
         return best;
     }
 
+    /**
+     * Chooses a card from the current AIs list of playable cards to play
+     * using the same method as {@link #chooseAICard(Player)}
+     *
+     * @return the chosen card to play or null if player has no playable cards
+     */
     public Card chooseAICardForCurrPlayer() {
         return chooseAICard(getCurrPlayer());
     }
 
+
+    /**
+     * Checks whether the given card is number card (1-9)
+     *
+     * @param card the card that is being checked
+     * @return true if the card is a number card, false otherwise
+     */
     private boolean isNumberCard(Card card) {
         if(side == Side.LIGHT) {
             Values v = card.getValue();
