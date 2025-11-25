@@ -29,8 +29,9 @@ public class UnoController implements ActionListener {
 
 
     /**
+     *Updates the status message for AI players
      *
-     * @param status
+     * @param status the message to display in the view
      */
     private void updateStatusWithPending(String status) {
         if (pendingAIStatusMessage != null && handlingAITurn) {
