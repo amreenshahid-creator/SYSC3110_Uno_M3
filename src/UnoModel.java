@@ -179,6 +179,10 @@ public class UnoModel {
         return drawnCards;
     }
 
+    /**
+     * Flips the deck between light and dark sides
+     * When flipping, ensures that the top card s not a wild card
+     */
     public void flip() {
         if(side == Side.DARK) {
             side = Side.LIGHT;
@@ -198,6 +202,10 @@ public class UnoModel {
         notifyViews();
     }
 
+
+    /**
+     * Adds five cards to the next players deck and skips their turn.
+     */
     public void drawFive() {
         int nextPlayerIndex = (currPlayerIndex + 1) % players.size();
         Player nextPlayer = players.get(nextPlayerIndex);
@@ -211,10 +219,20 @@ public class UnoModel {
     }
 
 
+    /**
+     * Skips every players turn and current player plays again by not advancing
+     */
     public void skipAll() {
         notifyViews();
     }
 
+
+    /**
+     * Initiates the Wild Stack card by setting the chosen colour for the stack,
+     * setting the top card as a wild stack card and advancing to next player.
+     *
+     * @param newColour colour chosen for the Wild Stack
+     */
     public void setInitWildStack(ColoursDark newColour) {
         topCard.setColourDark(newColour);
         isWildStackCard = true;
@@ -223,6 +241,13 @@ public class UnoModel {
         notifyViews();
     }
 
+    /**
+     * Executes logic for Wild Stack card by drawing cards for the current player.
+     * - Draw cards until it matches the chosen colour
+     * - When matching card is drawn, end the stack
+     *
+     * @return true if the player drew the chosen colour, false otherwise
+     */
     public boolean wildStack() {
         if(!isWildStackCard) {
             return false;
@@ -243,6 +268,11 @@ public class UnoModel {
         return false;
     }
 
+    /**
+     * Checks if Wild Stack card is being played
+     *
+     * @return true if the Wild Stack card is currently being played, false otherwise.
+     */
     public boolean isWildStackCard() {
         return isWildStackCard;
 
